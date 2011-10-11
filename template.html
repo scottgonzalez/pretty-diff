@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Pretty Diff</title>
+	<style>
+	.file-diff {
+		width: 800px;
+		overflow: auto;
+		border: 1px solid #aaa;
+	}
+	pre {
+		margin: 0;
+		font-family: 'Bitstream Vera Sans Mono','Courier',monospace;
+		font-size: 12px;
+		line-height: 1.4em;
+	}
+	.file {
+		color: #aaa;
+	}
+	.delete {
+		background-color: #fdd;
+	}
+	.insert {
+		background-color: #dfd;
+	}
+	.info {
+		color: #a0b;
+	}
+	</style>
+</head>
+<body>
+
+{{diff}}
+
+</body>
+</html>
