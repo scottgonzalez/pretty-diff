@@ -1,46 +1,36 @@
 #!/usr/bin/env node
 
 var fs = require( "fs" ),
-	exec = require( "child_process" ).exec;
+	exec = require( "child_process" ).exec,
+	diff = require( "./diff" );
 
-function generatePrettyDiff( diff ) {
-	var parsedDiff = parseDiff( diff ),
-		template = fs.readFileSync( __dirname + "/template.html", "utf8" ),
+diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
+	if ( error ) {
+		process.stderr.write( error );
+		return;
+	}
+	
+	if ( !parsedDiff ) {
+		console.log( "No differences" );
+		return;
+	}
+	
+	generatePrettyDiff( parsedDiff );
+});
+
+function generatePrettyDiff( parsedDiff ) {
+	var template = fs.readFileSync( __dirname + "/template.html", "utf8" ),
 		diffHtml = "";
-
-	for ( var file in parsedDiff ) {
-		diffHtml += "<h2>" + file + "</h2>" +
+		
+		for ( var file in parsedDiff ) {
+			diffHtml += "<h2>" + file + "</h2>" +
 			"<div class='file-diff'>" +
-				parsedDiff[ file ] +
+				markUpDiff( parsedDiff[ file ] ) +
 			"</div>";
-	}
-
-	fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
-	exec( "open /tmp/diff.html" );
-};
-
-function parseDiff( diff ) {
-	var parsed = splitByFile( diff );
-	for ( var file in parsed ) {
-		parsed[ file ] = markUpDiff( parsed[ file ] );
-	}
-	return parsed;
-}
-
-function splitByFile( diff ) {
-	var filename,
-		files = {};
-
-	diff.split( "\n" ).forEach(function( line, i ) {
-		if ( line.charAt( 0 ) === "d" ) {
-			filename = line.replace( /^diff --git a\/(\S+).*$/, "$1" );
-			files[ filename ] = [];
 		}
-
-		files[ filename ].push( line );
-	});
-
-	return files;
+		
+		fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
+		exec( "open /tmp/diff.html" );
 }
 
 var markUpDiff = function() {
@@ -67,13 +57,3 @@ var markUpDiff = function() {
 		}).join( "\n" );
 	};
 }();
-
-exec( "git diff " + process.argv.slice( 2 ).join( " " ), function( error, stdout, stderr ) {
-	if ( stderr.length ) {
-		process.stderr.write( stderr );
-	} else if ( stdout.length ) {
-		generatePrettyDiff( stdout );
-	} else {
-		console.log( "No differences" );
-	}
-});
