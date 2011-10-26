@@ -14,7 +14,7 @@ getAuth(function( username, password ) {
 	diff( args, function( error, parsedDiff ) {
 		var files = {};
 		for ( var file in parsedDiff ) {
-			files[ file + ".diff" ] = {
+			files[ file.replace( /\//g, "-" ) + ".diff" ] = {
 				content: parsedDiff[ file ].join( "\n" )
 			};
 		}
