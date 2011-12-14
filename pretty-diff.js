@@ -24,9 +24,9 @@ function generatePrettyDiff( parsedDiff ) {
 		
 		for ( var file in parsedDiff ) {
 			diffHtml += "<h2>" + file + "</h2>" +
-			"<div class='file-diff'>" +
+			"<div class='file-diff'><div>" +
 				markUpDiff( parsedDiff[ file ] ) +
-			"</div>";
+			"</div></div>";
 		}
 		
 		fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
