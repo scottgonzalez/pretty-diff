@@ -72,9 +72,9 @@ function getUsername( fn ) {
 
 function requestPassword( username, fn ) {
 	process.stdout.write( "GitHub password for " + username + ": " );
-	require( "tty" ).setRawMode( true );
 	process.stdin.resume();
 	process.stdin.setEncoding( "utf8" );
+	require( "tty" ).setRawMode( true );
 
 	var password = "";
 	process.stdin.on( "data", function( chunk ) {
