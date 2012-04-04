@@ -47,7 +47,8 @@ var markUpDiff = function() {
 		return str
 			.replace( /&/g, "&amp;" )
 			.replace( /</g, "&lt;" )
-			.replace( />/g, "&gt;" );
+			.replace( />/g, "&gt;" )
+			.replace( /\t/g, "    " );
 	}
 
 	return function( diff ) {
