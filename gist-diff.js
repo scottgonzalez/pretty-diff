@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var https = require( "https" ),
 	exec = require( "child_process" ).exec,
 	diff = require( "./diff" );
@@ -6,11 +8,11 @@ getAuth(function( username, password ) {
 	var auth = username && password ? username + ":" + password : null,
 		args = process.argv.slice( 2 ),
 		publicGist = args.indexOf( "--public" );
-	
+
 	if ( publicGist !== -1 ) {
 		args.splice( publicGist, 1 );
 	}
-	
+
 	diff( args, function( error, parsedDiff ) {
 		var files = {};
 		for ( var file in parsedDiff ) {
@@ -30,11 +32,11 @@ function postGist( settings, auth, fn ) {
 		headers = {
 			"Content-length": data.length
 		};
-	
+
 	if ( auth ) {
 		headers.Authorization = "Basic " + new Buffer( auth ).toString( "base64" );
 	}
-	
+
 	var req = https.request({
 		host: "api.github.com",
 		port: 443,
@@ -51,7 +53,7 @@ function postGist( settings, auth, fn ) {
 			fn( JSON.parse( response ) );
 		});
 	});
-	
+
 	req.write( data );
 	req.end();
 }

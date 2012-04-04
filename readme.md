@@ -1,16 +1,16 @@
 # Pretty Diff
 
 Pretty diff generates colorized HTML diffs similar to the diff/commit views on GitHub.
-Simply use `git pretty-diff` the same way you use `git diff` and you'll get pretty diffs.
-If you want to share the diff, you can use `git gist-diff` and you'll get a new gist. 
+Simply use `git pd` the same way you use `git diff` and you'll get pretty diffs.
+If you want to share the diff, you can use `git gd` and you'll get a new gist.
 
 ## Installation
 
 Clone the repo and then create a Git alias. Open `~/.gitconfig` and add:
 
 	[alias]
-		pretty-diff = !node /path/to/pretty-diff.js
-		gist-diff = !node /path/to/gist-diff.js
+		pd = !/path/to/pretty-diff.js
+		gd = !/path/to/gist-diff.js
 
 ## Usage
 
@@ -18,6 +18,10 @@ Clone the repo and then create a Git alias. Open `~/.gitconfig` and add:
 
 pretty-diff has no settings of its own.
 Simply provide whatever settings you want to pass to `git diff`.
+
+For example, to see what changed in the last commit:
+
+	git pd HEAD^
 
 ### gist-diff
 
