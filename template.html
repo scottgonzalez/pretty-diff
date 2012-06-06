@@ -4,25 +4,44 @@
 	<meta charset="utf-8">
 	<title>Pretty Diff</title>
 	<style>
+
+  body {
+    margin: 2em auto;
+    max-width: 790px;
+  }
+
 	h2 {
-		font-family: Arial;
-		font-size: 1.2em;
-		margin-bottom: 0.3em;
+    background: #FAFAFA;
+    border: 1px solid #D8D8D8;
+    border-bottom: 0;
+    color: #555;
+    font: normal 12px/33px sans-serif;
+    height: 33px;
+  	overflow: hidden;
+    padding: 0 5px;
+    text-align: left;
+    text-shadow: 0 1px 0 white;
+    margin: 0;
+
+    background: -moz-linear-gradient(#FAFAFA, #EAEAEA);
+    background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
 	}
 	.file-diff {
-		width: 800px;
+		border: 1px solid #D8D8D8;
+    margin-bottom: 1em;
 		overflow: auto;
-		border: 1px solid #aaa;
+    padding: 0.5em 0;
 	}
 	.file-diff > div {
-		float: left;
-		min-width: 800px;
+    width: 100%:
 	}
 	pre {
 		margin: 0;
 		font-family: 'Bitstream Vera Sans Mono','Courier',monospace;
 		font-size: 12px;
 		line-height: 1.4em;
+    text-indent: 0.5em;
 	}
 	.file {
 		color: #aaa;
