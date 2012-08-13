@@ -1,11 +1,23 @@
-var exec = require( "child_process" ).exec;
+var spawn = require( "child_process" ).spawn;
 
 module.exports = function( args, fn ) {
-	exec( "git diff " + args, function( error, stdout, stderr ) {
-		if ( error ) {
-			fn( error );
-		} else if ( stderr.length ) {
-			fn( stderr );
+	var childArgs = args ? [ "diff" ].concat( args.split( /\s/ ) ) : [ "diff" ],
+		child = spawn( "git", childArgs ),
+		stdout = "",
+		stderr = "",
+		closeEvent = parseFloat( process.version.substring( 1 ) ) < 0.8 ? "exit" : "close";
+
+	child.stdout.on( "data", function( chunk ) {
+		stdout += chunk;
+	});
+
+	child.stderr.on( "data", function( chunk ) {
+		stderr += chunk;
+	});
+
+	child.on( closeEvent, function( code ) {
+		if ( code !== 0 ) {
+			fn( new Error( stderr ) );
 		} else if ( !stdout.length ) {
 			fn( null, null );
 		} else {
