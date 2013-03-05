@@ -13,7 +13,7 @@ getAuth(function( username, password ) {
 		args.splice( publicGist, 1 );
 	}
 
-	diff( args, function( error, parsedDiff ) {
+	diff( args.join( " " ), function( error, parsedDiff ) {
 		var files = {};
 		for ( var file in parsedDiff ) {
 			files[ file.replace( /\//g, "-" ) + ".diff" ] = {
@@ -76,7 +76,7 @@ function requestPassword( username, fn ) {
 	process.stdout.write( "GitHub password for " + username + ": " );
 	process.stdin.resume();
 	process.stdin.setEncoding( "utf8" );
-	require( "tty" ).setRawMode( true );
+	process.stdin.setRawMode( true );
 
 	var password = "";
 	process.stdin.on( "data", function( chunk ) {
