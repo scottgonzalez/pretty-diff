@@ -7,9 +7,10 @@ var https = require( "https" ),
 getAuth(function( username, password ) {
 	var auth = username && password ? username + ":" + password : null,
 		args = process.argv.slice( 2 ),
-		publicGist = args.indexOf( "--public" );
+		publicGist = args.indexOf( "--public" ),
+		isPublic = publicGist !== -1;
 
-	if ( publicGist !== -1 ) {
+	if ( isPublic ) {
 		args.splice( publicGist, 1 );
 	}
 
@@ -21,7 +22,7 @@ getAuth(function( username, password ) {
 			};
 		}
 		postGist({
-			"public": publicGist !== -1,
+			"public": isPublic,
 			files: files
 		}, auth, showGist );
 	});
@@ -68,11 +69,24 @@ function showGist( data ) {
 
 function getUsername( fn ) {
 	exec( "git config --get github.user", function( error, stdout ) {
-		fn( stdout.trim() );
+		var username = stdout.trim();
+		if ( username ) {
+			fn( username );
+			return;
+		}
+
+		process.stdout.write( "GitHub username: " );
+		process.stdin.resume();
+		process.stdin.setEncoding( "utf8" );
+
+		process.stdin.once( "data", function( chunk ) {
+			process.stdin.pause();
+			fn( chunk.trim() );
+		});
 	});
 }
 
-function requestPassword( username, fn ) {
+function getPassword( username, fn ) {
 	process.stdout.write( "GitHub password for " + username + ": " );
 	process.stdin.resume();
 	process.stdin.setEncoding( "utf8" );
@@ -92,7 +106,7 @@ function requestPassword( username, fn ) {
 
 function getAuth( fn ) {
 	getUsername(function( username ) {
-		requestPassword( username, function( password ) {
+		getPassword( username, function( password ) {
 			fn( username, password );
 		});
 	});
