@@ -4,8 +4,7 @@ module.exports = function( args, fn ) {
 	var childArgs = args ? [ "diff" ].concat( args.split( /\s/ ) ) : [ "diff" ],
 		child = spawn( "git", childArgs ),
 		stdout = "",
-		stderr = "",
-		closeEvent = parseFloat( process.version.substring( 1 ) ) < 0.8 ? "exit" : "close";
+		stderr = "";
 
 	child.stdout.on( "data", function( chunk ) {
 		stdout += chunk;
@@ -15,7 +14,7 @@ module.exports = function( args, fn ) {
 		stderr += chunk;
 	});
 
-	child.on( closeEvent, function( code ) {
+	child.on( "close", function( code ) {
 		if ( code !== 0 ) {
 			fn( new Error( stderr ) );
 		} else if ( !stdout.length ) {
