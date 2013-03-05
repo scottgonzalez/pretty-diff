@@ -1,0 +1,24 @@
+{
+  "name": "pretty-diff",
+  "version": "0.0.0",
+  "description": "Generate colorized HTML diffs.",
+  "keywords": [
+    "git",
+    "diff"
+  ],
+  "homepage": "https://github.com/scottgonzalez/pretty-diff",
+  "bugs": "https://github.com/scottgonzalez/pretty-diff/issues",
+  "author": {
+    "name": "Scott González",
+    "email": "scott.gonzalez@gmail.com",
+    "url": "http://scottgonzalez.com"
+  },
+  "bin": {
+    "pretty-diff": "./pretty-diff.js",
+    "gist-diff": "./gist-diff.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/scottgonzalez/pretty-diff.git"
+  }
+}
