@@ -2,7 +2,16 @@
 
 var https = require( "https" ),
 	exec = require( "child_process" ).exec,
-	diff = require( "./diff" );
+	diff = require( "./diff" ),
+	userAgent = getUA();
+
+function getUA() {
+	var os = require( "os" ),
+		version = require( "./package.json" ).version;
+	return os.platform() + "/" + os.release() + " " +
+		"node/" + process.versions.node + " " +
+		"gist-diff/" + version;
+}
 
 getAuth(function( username, password ) {
 	var auth = username && password ? username + ":" + password : null,
@@ -31,7 +40,8 @@ getAuth(function( username, password ) {
 function postGist( settings, auth, fn ) {
 	var data = JSON.stringify( settings ),
 		headers = {
-			"Content-length": data.length
+			"user-agent": userAgent,
+			"content-length": data.length
 		};
 
 	if ( auth ) {
