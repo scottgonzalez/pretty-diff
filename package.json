@@ -20,5 +20,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/scottgonzalez/pretty-diff.git"
+  },
+  "dependencies": {
+    "github-request": "1.0.0"
   }
 }

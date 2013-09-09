@@ -37,6 +37,23 @@ In order to create the gist with your account, you will be prompted for your pas
 If you enter no password, then an anonymous gist will be generated.
 However, if you enter an incorrect password, then no gist will be generated.
 
+#### Authentication
+
+If you set your GitHub username in your git config, you will only be prompted for your password.
+
+```sh
+git config --global github.user "Your Username"
+```
+
+To avoid being prompted for your password, you can
+[create a personal access token](https://github.com/settings/applications) and
+store it in your git config. You don't need to set `github.user` if you're using
+a token.
+
+```sh
+git config --global gist-diff.token "Your token"
+```
+
 ## License
 
 Copyright 2013 Scott González. Released under the terms of the MIT license.

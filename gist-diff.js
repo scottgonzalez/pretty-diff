@@ -2,8 +2,17 @@
 
 var https = require( "https" ),
 	exec = require( "child_process" ).exec,
+	github = require( "github-request" ),
 	diff = require( "./diff" ),
-	userAgent = getUA();
+	args = process.argv.slice( 2 ),
+	publicGist = args.indexOf( "--public" ),
+	isPublic = publicGist !== -1;
+
+if ( isPublic ) {
+	args.splice( publicGist, 1 );
+}
+
+
 
 function getUA() {
 	var os = require( "os" ),
@@ -13,23 +22,30 @@ function getUA() {
 		"gist-diff/" + version;
 }
 
-getAuth(function( username, password ) {
-	var auth = username && password ? username + ":" + password : null,
-		args = process.argv.slice( 2 ),
-		publicGist = args.indexOf( "--public" ),
-		isPublic = publicGist !== -1;
-
-	if ( isPublic ) {
-		args.splice( publicGist, 1 );
+diff( args.join( " " ), function( error, parsedDiff ) {
+	if ( error ) {
+		console.log( error );
+		return;
 	}
 
-	diff( args.join( " " ), function( error, parsedDiff ) {
-		var files = {};
-		for ( var file in parsedDiff ) {
-			files[ file.replace( /\//g, "-" ) + ".diff" ] = {
-				content: parsedDiff[ file ].join( "\n" )
-			};
+	if ( !parsedDiff ) {
+		console.log( "No differences" );
+		return;
+	}
+
+	var files = {};
+	for ( var file in parsedDiff ) {
+		files[ file.replace( /\//g, "-" ) + ".diff" ] = {
+			content: parsedDiff[ file ].join( "\n" )
+		};
+	}
+
+	getAuth(function( error, auth ) {
+		if ( error ) {
+			console.log( error );
+			return;
 		}
+
 		postGist({
 			"public": isPublic,
 			files: files
@@ -38,38 +54,25 @@ getAuth(function( username, password ) {
 });
 
 function postGist( settings, auth, fn ) {
-	var data = JSON.stringify( settings ),
-		headers = {
-			"user-agent": userAgent,
-			"content-length": data.length
-		};
+	var headers = { "user-agent": getUA() };
 
 	if ( auth ) {
-		headers.Authorization = "Basic " + new Buffer( auth ).toString( "base64" );
+		headers.Authorization = auth;
 	}
 
-	var req = https.request({
-		host: "api.github.com",
-		port: 443,
+	github.request({
 		path: "/gists",
 		method: "POST",
 		headers: headers
-	}, function( res ) {
-		var response = "";
-		res.setEncoding( "utf8" );
-		res.on( "data", function( chunk ) {
-			response += chunk;
-		});
-		res.on( "end", function() {
-			fn( JSON.parse( response ) );
-		});
-	});
-
-	req.write( data );
-	req.end();
+	}, settings, fn );
 }
 
-function showGist( data ) {
+function showGist( error, data ) {
+	if ( error ) {
+		console.log( error );
+		return;
+	}
+
 	if ( data.html_url ) {
 		exec( "open " + data.html_url );
 	} else {
@@ -77,21 +80,37 @@ function showGist( data ) {
 	}
 }
 
-function getUsername( fn ) {
-	exec( "git config --get github.user", function( error, stdout ) {
-		var username = stdout.trim();
-		if ( username ) {
-			fn( username );
-			return;
+function getGitConfig( name, fn ) {
+	exec( "git config --get " + name, function( error, stdout ) {
+		if ( error ) {
+			if ( /^Command failed:\s+$/.test( error.message ) ) {
+				return fn( null, null );
+			}
+
+			return fn( error );
 		}
 
-		process.stdout.write( "GitHub username: " );
+		fn( null, stdout.trim() );
+	});
+}
+
+function getUsername( fn ) {
+	getGitConfig( "github.user", function( error, username ) {
+		if ( error ) {
+			return fn( error );
+		}
+
+		if ( username ) {
+			return fn( null, username );
+		}
+
+		process.stdout.write( "GitHub username (leave blank for anonymous gist): " );
 		process.stdin.resume();
 		process.stdin.setEncoding( "utf8" );
 
 		process.stdin.once( "data", function( chunk ) {
 			process.stdin.pause();
-			fn( chunk.trim() );
+			fn( null, chunk.trim() );
 		});
 	});
 }
@@ -115,9 +134,31 @@ function getPassword( username, fn ) {
 }
 
 function getAuth( fn ) {
-	getUsername(function( username ) {
-		getPassword( username, function( password ) {
-			fn( username, password );
+	getGitConfig( "gist-diff.token", function( error, token ) {
+		if ( token ) {
+			return fn( null, "token " + token );
+		}
+
+		getUsername(function( error, username ) {
+			if ( error ) {
+				return fn( error );
+			}
+
+			// No username, create anonymous gist
+			if ( !username ) {
+				return fn( null, null );
+			}
+
+			getPassword( username, function( password ) {
+
+				// No password, create anonymous gist
+				if ( !password ) {
+					return fn( null, null );
+				}
+
+				fn( null, "Basic " +
+					new Buffer( username + ":" + password ).toString( "base64" ) );
+			});
 		});
 	});
 }
