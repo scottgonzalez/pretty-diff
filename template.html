@@ -10,7 +10,7 @@
 	#wrapper {
 		display: inline-block;
 		margin-top: 1em;
-		min-width: 800px;
+		max-width: 800px;
 		text-align: left;
 	}
 	h2 {
@@ -31,17 +31,25 @@
 		border: 1px solid #d8d8d8;
 		margin-bottom: 1em;
 		overflow: auto;
-		padding: 0.5em 0;
 	}
-	.file-diff > div {
-		width: 100%:
+	.file-diff > table {
+		border-spacing: 0;
+		width: 100%;
+	}
+	.line {
+		font-family: "Bitstream Vera Sans Mono", Courier, monospace;
+		font-size: 12px;
+	}
+	.line-number {
+		color: #aaa;
+		border-right: 1px solid #e5e5e5;
+		padding: 0 8px;
 	}
 	pre {
 		margin: 0;
-		font-family: "Bitstream Vera Sans Mono", Courier, monospace;
-		font-size: 12px;
 		line-height: 1.4em;
 		text-indent: 0.5em;
+		display: inline-block;
 	}
 	.file {
 		color: #aaa;
