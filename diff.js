@@ -44,7 +44,7 @@ function splitByFile( diff ) {
 				oldLineNum: null,
 				newLineNum: null
 			});
-		} else if ( matches = line.match( /^($esc\[[0-9;]+m)*([\ +-])/ ) ) {
+		} else if ( matches = line.match( /^(\[[0-9;]+m)*([\ +-])/ ) ) {
 			files[ filename ].push({
 				line: line,
 				oldLineNum: oldLineNum,
