@@ -24,9 +24,9 @@ function generatePrettyDiff( parsedDiff ) {
 
 		for ( var file in parsedDiff ) {
 			diffHtml += "<h2>" + file + "</h2>" +
-			"<div class='file-diff'><div>" +
+			"<div class='file-diff'><table>" +
 				markUpDiff( parsedDiff[ file ] ) +
-			"</div></div>";
+			"</table></div>";
 		}
 
 		fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
@@ -51,10 +51,16 @@ var markUpDiff = function() {
 			.replace( /\t/g, "    " );
 	}
 
+	function lineNumTemplate( oldNum, newNum, type ) {
+		var remove = type == '+' ? '' : oldNum,
+			add    = type == '-' ? '' : newNum;
+		return '<td class="line-number">' + (remove || '') + '</td><td class="line-number">' + (add || '') + '</td>';
+	}
+
 	return function( diff ) {
-		return diff.map(function( line ) {
-			var type = line.charAt( 0 );
-			return "<pre class='" + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+		return diff.map(function( lineData ) {
+			var type = lineData.line.charAt( 0 );
+			return '<tr class="line ' + diffClasses[ type ] + '">' + lineNumTemplate( lineData.oldLineNum, lineData.newLineNum, type ) + '<td><pre>' + escape( lineData.line ) + '</pre></td></tr>';
 		}).join( "\n" );
 	};
 }();

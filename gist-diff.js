@@ -36,7 +36,7 @@ diff( args.join( " " ), function( error, parsedDiff ) {
 	var files = {};
 	for ( var file in parsedDiff ) {
 		files[ file.replace( /\//g, "-" ) + ".diff" ] = {
-			content: parsedDiff[ file ].join( "\n" )
+			content: parsedDiff[ file ].map(function(data) { return data.line; }).join( "\n" )
 		};
 	}
 
