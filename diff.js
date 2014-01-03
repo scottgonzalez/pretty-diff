@@ -27,10 +27,18 @@ module.exports = function( args, fn ) {
 
 function splitByFile( diff ) {
 	var filename,
+		isEmpty = true;
 		files = {};
 
 	diff.split( "\n" ).forEach(function( line, i ) {
+		// Unmerged paths, and possibly other non-diffable files
+		// https://github.com/scottgonzalez/pretty-diff/issues/11
+		if ( !line || line.charAt( 0 ) === "*" ) {
+			return;
+		}
+
 		if ( line.charAt( 0 ) === "d" ) {
+			isEmpty = false;
 			filename = line.replace( /^diff --git a\/(\S+).*$/, "$1" );
 			files[ filename ] = [];
 		}
@@ -38,5 +46,5 @@ function splitByFile( diff ) {
 		files[ filename ].push( line );
 	});
 
-	return files;
+	return isEmpty ? null : files;
 }
