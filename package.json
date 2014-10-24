@@ -13,6 +13,12 @@
     "email": "scott.gonzalez@gmail.com",
     "url": "http://scottgonzalez.com"
   },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/scottgonzalez/pretty-diff/blob/master/LICENSE.txt"
+    }
+  ],
   "bin": {
     "pretty-diff": "./pretty-diff.js",
     "gist-diff": "./gist-diff.js"
