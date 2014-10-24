@@ -4,7 +4,7 @@ Pretty diff generates colorized HTML diffs similar to the diff/commit views on G
 Simply use `pretty-diff` the same way you use `git diff` and you'll get pretty diffs.
 If you want to share the diff, you can use `gist-diff` and you'll get a new gist.
 
-Support this project by [donating on Gittip](https://www.gittip.com/scottgonzalez/).
+Support this project by [donating on Gratipay](https://gratipay.com/scottgonzalez/).
 
 ## Installation
 
@@ -60,4 +60,4 @@ Copyright 2014 Scott González. Released under the terms of the MIT license.
 
 ---
 
-Support this project by [donating on Gittip](https://www.gittip.com/scottgonzalez/).
+Support this project by [donating on Gratipay](https://gratipay.com/scottgonzalez/).
