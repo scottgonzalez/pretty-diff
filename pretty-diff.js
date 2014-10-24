@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require( "fs" ),
-	exec = require( "child_process" ).exec,
+	open = require( "open" ),
 	diff = require( "./diff" );
 
 diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
@@ -30,7 +30,7 @@ function generatePrettyDiff( parsedDiff ) {
 		}
 
 		fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
-		exec( "open /tmp/diff.html" );
+		open( "/tmp/diff.html" );
 }
 
 var markUpDiff = function() {

@@ -2,6 +2,7 @@
 
 var https = require( "https" ),
 	exec = require( "child_process" ).exec,
+	open = require( "open" ),
 	github = require( "github-request" ),
 	diff = require( "./diff" ),
 	args = process.argv.slice( 2 ),
@@ -74,7 +75,7 @@ function showGist( error, data ) {
 	}
 
 	if ( data.html_url ) {
-		exec( "open " + data.html_url );
+		open( data.html_url );
 	} else {
 		console.log( data.message );
 	}
