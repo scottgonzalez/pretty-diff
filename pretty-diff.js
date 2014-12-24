@@ -51,10 +51,46 @@ var markUpDiff = function() {
 			.replace( /\t/g, "    " );
 	}
 
-	return function( diff ) {
-		return diff.map(function( line ) {
-			var type = line.charAt( 0 );
-			return "<pre class='" + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
-		}).join( "\n" );
+	return function( lines ) {
+		var line, type, lookAhead, lookAheadType,
+			output = "";
+
+		while ( lines.length ) {
+			line = lines.shift();
+			type = line.charAt( 0 );
+
+			if ( type === "d" || type === "i" || type === "@" ) {
+				output += "<pre class='" + diffClasses[ type ] + "'>" + escape( line ) + "</pre>\n";
+				continue;
+			}
+
+			if ( type === "+" ) {
+				output += "<pre class='split'> </pre>";
+				output += "<pre class='split " + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+			} else if ( type === "-" ) {
+				output += "<pre class='split " + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+
+				lookAhead = 0;
+				lookAheadType = lines[ lookAhead ].charAt( 0 );
+				while ( lookAheadType === "-" && lookAhead < lines.length ) {
+					lookAhead++;
+				}
+
+				if ( lookAheadType === "+" ) {
+					line = lines.splice( lookAhead, 1 )[ 0 ];
+					type = line.charAt( 0 );
+					output += "<pre class='split " + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+				} else {
+					output += "<pre class='split'> </pre>";
+				}
+			} else {
+				output += "<pre class='split " + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+				output += "<pre class='split " + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
+			}
+
+			output += "\n";
+		}
+
+		return output;
 	};
 }();
