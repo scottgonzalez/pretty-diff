@@ -6,7 +6,7 @@ var fs = require( "fs" ),
 
 diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
 	if ( error ) {
-		process.stderr.write( error );
+		console.error( error );
 		return;
 	}
 
@@ -74,6 +74,7 @@ var markUpDiff = function() {
 				lookAheadType = lines[ lookAhead ].charAt( 0 );
 				while ( lookAheadType === "-" && lookAhead < lines.length ) {
 					lookAhead++;
+					lookAheadType = lines[ lookAhead ].charAt( 0 );
 				}
 
 				if ( lookAheadType === "+" ) {
