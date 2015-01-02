@@ -71,9 +71,8 @@ var markUpDiff = function() {
 				output += "<pre class='split " + diffClasses[ type ] + "'>" + escape( line ) + "</pre>";
 
 				lookAhead = 0;
-				lookAheadType = lines[ lookAhead ].charAt( 0 );
-				while ( lookAheadType === "-" && lookAhead < lines.length ) {
-					lookAhead++;
+				lookAheadType = type;
+				while ( lookAheadType === "-" && ++lookAhead < lines.length ) {
 					lookAheadType = lines[ lookAhead ].charAt( 0 );
 				}
 
