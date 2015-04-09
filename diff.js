@@ -16,7 +16,9 @@ module.exports = function( args, fn ) {
 
 	child.on( "close", function( code ) {
 		if ( code !== 0 ) {
-			fn( new Error( stderr ) );
+			var error = new Error( stderr );
+			error.code = code;
+			fn( error );
 		} else if ( !stdout.length ) {
 			fn( null, null );
 		} else {

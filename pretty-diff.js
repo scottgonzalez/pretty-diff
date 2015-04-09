@@ -6,6 +6,13 @@ var fs = require( "fs" ),
 
 diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
 	if ( error ) {
+
+		// Usage error, assume we're not in a git directory
+		if ( error.code === 129 ) {
+			process.stderr.write( "Error: Not a git repository\n" );
+			return;
+		}
+
 		process.stderr.write( error );
 		return;
 	}
