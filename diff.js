@@ -47,7 +47,7 @@ function splitByFile( diff ) {
 
 		if ( line.charAt( 0 ) === "d" ) {
 			isEmpty = false;
-			filename = line.replace( /^diff --git a\/(\S+).*$/, "$1" );
+			filename = line.replace( /^diff --(?:cc |git a\/)(\S+).*$/, "$1" );
 			files[ filename ] = [];
 		}
 
