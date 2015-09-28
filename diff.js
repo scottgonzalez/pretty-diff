@@ -1,8 +1,10 @@
 var spawn = require( "child_process" ).spawn;
 
 module.exports = function( args, fn ) {
-	var childArgs = args ? [ "diff" ].concat( args.split( /\s/ ) ) : [ "diff" ],
-		child = spawn( "git", childArgs ),
+	var childArgs = args ? [ "diff" ].concat( args.split( /\s/ ) ) : [ "diff" ];
+	childArgs.push( "--no-color" );
+
+	var child = spawn( "git", childArgs ),
 		stdout = "",
 		stderr = "";
 
