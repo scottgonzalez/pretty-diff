@@ -6,6 +6,9 @@ If you want to share the diff, you can use `gist-diff` and you'll get a new gist
 
 Support this project by [donating on Gratipay](https://gratipay.com/scottgonzalez/).
 
+![image](https://cloud.githubusercontent.com/assets/39191/10147714/8c358910-65e4-11e5-8e59-e1526ef674cd.png)
+
+
 ## Installation
 
 Simply install globally via npm:
