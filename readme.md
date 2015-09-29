@@ -59,7 +59,7 @@ git config --global gist-diff.token "Your token"
 
 ## License
 
-Copyright 2014 Scott González. Released under the terms of the MIT license.
+Copyright Scott González. Released under the terms of the MIT license.
 
 ---
 
