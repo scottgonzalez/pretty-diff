@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-var https = require( "https" ),
-	exec = require( "child_process" ).exec,
-	open = require( "open" ),
-	github = require( "github-request" ),
-	diff = require( "./diff" ),
-	args = process.argv.slice( 2 ),
-	publicGist = args.indexOf( "--public" ),
-	isPublic = publicGist !== -1;
+var https = require( "https" );
+var exec = require( "child_process" ).exec;
+var open = require( "open" );
+var github = require( "github-request" );
+var diff = require( "./diff" );
+var args = process.argv.slice( 2 );
+var publicGist = args.indexOf( "--public" );
+var isPublic = publicGist !== -1;
 
 if ( isPublic ) {
 	args.splice( publicGist, 1 );
@@ -16,8 +16,9 @@ if ( isPublic ) {
 
 
 function getUA() {
-	var os = require( "os" ),
-		version = require( "./package.json" ).version;
+	var os = require( "os" );
+	var version = require( "./package.json" ).version;
+
 	return os.platform() + "/" + os.release() + " " +
 		"node/" + process.versions.node + " " +
 		"gist-diff/" + version;

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-var fs = require( "fs" ),
-	open = require( "open" ),
-	diff = require( "./diff" );
+var fs = require( "fs" );
+var open = require( "open" );
+var diff = require( "./diff" );
 
 diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
 	if ( error ) {
@@ -26,18 +26,18 @@ diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
 });
 
 function generatePrettyDiff( parsedDiff ) {
-	var template = fs.readFileSync( __dirname + "/template.html", "utf8" ),
-		diffHtml = "";
+	var template = fs.readFileSync( __dirname + "/template.html", "utf8" );
+	var diffHtml = "";
 
-		for ( var file in parsedDiff ) {
-			diffHtml += "<h2>" + file + "</h2>" +
-			"<div class='file-diff'><div>" +
-				markUpDiff( parsedDiff[ file ] ) +
-			"</div></div>";
-		}
+	for ( var file in parsedDiff ) {
+		diffHtml += "<h2>" + file + "</h2>" +
+		"<div class='file-diff'><div>" +
+			markUpDiff( parsedDiff[ file ] ) +
+		"</div></div>";
+	}
 
-		fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
-		open( "/tmp/diff.html" );
+	fs.writeFileSync( "/tmp/diff.html", template.replace( "{{diff}}", diffHtml ) );
+	open( "/tmp/diff.html" );
 }
 
 var markUpDiff = function() {
