@@ -1,12 +1,15 @@
 var spawn = require( "child_process" ).spawn;
 
 module.exports = function( args, fn ) {
-	var childArgs = args ? [ "diff" ].concat( args.split( /\s/ ) ) : [ "diff" ];
-	childArgs.push('--no-color');
+	var stdout = "";
+	var stderr = "";
 
-	var	child = spawn( "git", childArgs ),
-		stdout = "",
-		stderr = "";
+	var childArgs = [ "diff", "--no-color" ];
+	if ( args ) {
+		childArgs = childArgs.concat( args.split( /\s/ ) );
+	}
+
+	var child = spawn( "git", childArgs );
 
 	child.stdout.on( "data", function( chunk ) {
 		stdout += chunk;
@@ -30,11 +33,12 @@ module.exports = function( args, fn ) {
 };
 
 function splitByFile( diff ) {
-	var filename,
-		isEmpty = true;
-		files = {};
+	var filename;
+	var isEmpty = true;
+	var files = {};
 
 	diff.split( "\n" ).forEach(function( line, i ) {
+
 		// Unmerged paths, and possibly other non-diffable files
 		// https://github.com/scottgonzalez/pretty-diff/issues/11
 		if ( !line || line.charAt( 0 ) === "*" ) {
