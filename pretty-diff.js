@@ -13,7 +13,7 @@ diff( process.argv.slice( 2 ).join( " " ), function( error, parsedDiff ) {
 			return;
 		}
 
-		process.stderr.write( error );
+		process.stderr.write( error.message );
 		return;
 	}
 
