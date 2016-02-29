@@ -1,6 +1,6 @@
 {
   "name": "pretty-diff",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Generate colorized HTML diffs.",
   "keywords": [
     "git",
