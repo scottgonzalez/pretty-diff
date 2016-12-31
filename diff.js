@@ -20,6 +20,15 @@ module.exports = function( args, fn ) {
 	});
 
 	child.on( "close", function( code ) {
+
+		// `git diff` will render a diff when comparing files that aren't part of a
+		// git repository, but it will exit with code 1 and nothing written to
+		// stderr. We detect this case and pretend that the exit code was 0 so that
+		// the diff gets displayed.
+		if ( code === 1 && !stderr && stdout ) {
+			code = 0
+		}
+
 		if ( code !== 0 ) {
 			var error = new Error( stderr );
 			error.code = code;
