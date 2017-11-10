@@ -20,8 +20,10 @@
     }
   ],
   "bin": {
-    "pretty-diff": "./pretty-diff.js",
-    "gist-diff": "./gist-diff.js"
+    "git-gist-diff": "./gist-diff.js",
+    "git-pretty-diff": "./pretty-diff.js",
+    "gist-diff": "./gist-diff.js",
+    "pretty-diff": "./pretty-diff.js"
   },
   "repository": {
     "type": "git",
