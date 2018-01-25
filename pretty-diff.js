@@ -55,6 +55,7 @@ var markUpDiff = function() {
 
 	function escape( str ) {
 		return str
+			.replace( /\$/g, "$$$$" )
 			.replace( /&/g, "&amp;" )
 			.replace( /</g, "&lt;" )
 			.replace( />/g, "&gt;" )
