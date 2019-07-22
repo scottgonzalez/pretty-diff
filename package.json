@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "github-request": "1.2.4",
-    "open": "0.0.5"
+    "open": "6.4.0"
   }
 }
