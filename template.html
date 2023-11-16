@@ -6,38 +6,41 @@
 	<style>
 	body {
 		text-align: center;
+		margin: 0 1rem 1rem;
 	}
 	#wrapper {
 		display: inline-block;
 		margin-top: 1em;
-		min-width: 800px;
 		text-align: left;
+		width: 100%;
 	}
 	h2 {
-		background: #fafafa;
-		background: -moz-linear-gradient(#fafafa, #eaeaea);
-		background: -webkit-linear-gradient(#fafafa, #eaeaea);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
+		align-items: center;
+		background: linear-gradient(#fafafa, #eaeaea);
 		border: 1px solid #d8d8d8;
 		border-bottom: 0;
 		color: #555;
+		display: flex;
 		font: 14px sans-serif;
+		justify-content: space-between;
 		overflow: hidden;
 		padding: 10px 6px;
 		text-shadow: 0 1px 0 white;
-		margin: 0;
+		margin: 1rem 0 0 0;
+	}
+	h2:first-child {
+		margin-top: 0;
+	}
+	.title {
+		margin-left: 0.5rem;
 	}
 	.copy {
 		float: right;
 	}
 	.file-diff {
 		border: 1px solid #d8d8d8;
-		margin-bottom: 1em;
 		overflow: auto;
 		padding: 0.5em 0;
-	}
-	.file-diff > div {
-		width: 100%;
 	}
 	pre {
 		margin: 0;
@@ -57,6 +60,9 @@
 	}
 	.info {
 		color: #a0b;
+	}
+	.hidden {
+		display: none;
 	}
 	</style>
 </head>

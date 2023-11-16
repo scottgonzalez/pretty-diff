@@ -35,14 +35,19 @@ function generatePrettyDiff( parsedDiff ) {
 	for ( var file in parsedDiff ) {
 		diffHtml +=
 			"<h2>" +
-				file +
+				"<div>" +
+					"<button class='collapse' onclick=" +
+						"'this.closest(\"h2\").nextElementSibling.classList.toggle(\"hidden\")'" +
+					">↕</button>" +
+					"<span class='title'>" + file + "</span>" +
+				"</div>" +
 				"<button class='copy' onclick=" +
 					"'navigator.clipboard.writeText(\"" + file + "\")'" +
 				">copy path</button>" +
 			"</h2>" +
-			"<div class='file-diff'><div>" +
+			"<div class='file-diff'>" +
 				markUpDiff( parsedDiff[ file ] ) +
-			"</div></div>";
+			"</div>";
 	}
 
 	fs.writeFileSync( tempPath, template.replace( "{{diff}}", diffHtml ) );
